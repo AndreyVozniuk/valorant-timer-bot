@@ -1,0 +1,25 @@
+{
+  "name": "valoranttimer_bot",
+  "version": "1.0.0",
+  "description": "Simple bot to count the time spent in the game Valorant",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreyVozniuk/valorantTimer_bot.git"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "js",
+    "NodeJS"
+  ],
+  "author": "Andriy Vozniuk <vozniukandrey@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndreyVozniuk/valorantTimer_bot/issues"
+  },
+  "homepage": "https://github.com/AndreyVozniuk/valorantTimer_bot#readme"
+}
