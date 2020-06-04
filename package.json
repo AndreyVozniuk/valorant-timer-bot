@@ -4,7 +4,7 @@
   "description": "Simple bot to count the time spent in the game Valorant",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/AndreyVozniuk/valorantTimer_bot/issues"
   },
-  "homepage": "https://github.com/AndreyVozniuk/valorantTimer_bot#readme"
+  "homepage": "https://github.com/AndreyVozniuk/valorantTimer_bot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.50.0"
+  }
 }
