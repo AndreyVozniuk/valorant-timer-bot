@@ -1,6 +1,6 @@
 {
   "name": "valoranttimer_bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple bot to count the time spent in the game Valorant",
   "main": "index.js",
   "scripts": {
