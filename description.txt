@@ -1,5 +1,0 @@
-Before launching Valorant you should start the bot, after that the bot will ask you about the number of hours played in the game, 
-if this is the first launch, you should enter your data, for subsequent launches you can enter the information you receive from 
-the bot, after the bot will start the stopwatch, when you finish the game you should use the command quit, 
-after pressing it the stopwatch will stop and show you information about the time you spent in the game. For any questions 
-or suggestions you can write to @AndrushaV.
