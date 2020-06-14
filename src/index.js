@@ -1,20 +1,22 @@
 process.env['NTBA_FIX_319'] = 1 // for work bot without exceptions
 
 const TelegramBot = require('node-telegram-bot-api')
-const fs = require('fs')
 const helper = require('./helpers')
 const keyboard = require('./keyboards')
+const config = require('./config')
+const db = require('./database')
 const StartStop = require('./stopwatch')
 
-const TOKEN = fs.readFileSync('./files_txt/token.txt', 'utf8')
-const bot = new TelegramBot(TOKEN, {polling:true})
+const bot = new TelegramBot(config.TOKEN, {polling:true})
 
 helper.logStarted()
+db.connect()
 
-const createDataDB = (totalHours = '00:00:00', lastSessionHours = '00:00:00') => {
+const createDataDB = (lastSessionHours = '00:00:00', totalHours = '00:00:00', theLongestSession='00:00:00') => {
   return{
+    lastSessionHours,
     totalHours,
-    lastSessionHours
+    theLongestSession
   }
 }
 
@@ -26,20 +28,22 @@ const editMessage = (str, query, keyboard) => {
   })
 }
 
-bot.onText(/\/start/, msg => {
-  if(msg.from.username != 'AndrushaV')
-    bot.sendMessage(msg.chat.id, 'Sorry, but you haven`t access to this bot =(')
-  else{
-    bot.sendMessage(msg.chat.id, `Select option 💬 `, {
-      reply_markup: { inline_keyboard: keyboard.start_keyboard }
-    })
+bot.onText(/\/start/, (msg) => {
+  if (db.findUser(msg.from.username).length === 0) {
+    db.createUser(msg.from.username)
   }
+
+  bot.sendMessage(msg.chat.id, `Select option 💬 `, {
+    reply_markup: { inline_keyboard: keyboard.start_keyboard },
+  })
 })
 
 bot.on('callback_query', (query) => {
   switch(query.data){
     case 'showInfo':
-      editMessage(helper.getStats(), query, keyboard.toOptions_keyboard)
+      db.findUser(query.from.username).then( user => {
+        editMessage(helper.getStats(user[0]).trim(), query, keyboard.toOptions_keyboard)
+      })
       break
     case 'backToOprions':
       editMessage('Select option 💬', query, keyboard.start_keyboard)
@@ -63,12 +67,12 @@ bot.on('callback_query', (query) => {
       break
     case 'endSession':
       const sessionDuration = StartStop()
-      helper.UpdateDataInDB( createDataDB(helper.addTimeToTotalHour(sessionDuration), sessionDuration) )
+      db.updateUserData(query.from.username, createDataDB(sessionDuration))
       editMessage(`Your in-game session lasted: ${sessionDuration} `, query, keyboard.toOptions_keyboard)
       break
   }
 })
 
 bot.onText(/\/help/, (msg) => {
-    bot.sendMessage(msg.chat.id, helper.getDescription())
+  bot.sendMessage(msg.chat.id, helper.getDescription())
 })
