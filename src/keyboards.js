@@ -17,6 +17,12 @@ module.exports = {
         text: 'Show info 📊',
         callback_data: 'showInfo',
       }
+    ],
+    [
+      {
+        text: 'Reset info 💥',
+        callback_data: 'resetInfo',
+      }
     ]
   ],
   toOptions_keyboard: [
@@ -30,9 +36,21 @@ module.exports = {
   quit_keyboard: [
     [
       {
-        text: 'End the game session',
+        text: 'End the game session 🎮',
         callback_data: 'endSession',
       }
     ]
-  ]
+  ],
+  confirm_keyboard: [
+    [
+      {
+        text: 'Yes ✅',
+        callback_data: 'confirmReset',
+      }, 
+      {
+        text: 'No ❌',
+        callback_data: 'notConfirmReset',
+      }, 
+    ]
+  ],
 }
