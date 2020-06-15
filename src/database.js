@@ -45,15 +45,15 @@ module.exports = {
     }
   },
 
-  findUser: async (userName) => {
-    return userModel.find({ telegramUserName: userName.trim() }, (err, user) => {
+  findUser: async (userId) => {
+    return userModel.find({ userID: userId }, (err, user) => {
       if (err) return console.log(err)
       return user
     })
   },
 
-  createUser: async (userName) => {
-    userModel.create({ telegramUserName: userName }, (err, user) => {
+  createUser: async (userId, userName) => {
+    userModel.create({ userID: userId, telegramUserName: userName}, (err, user) => {
       if (err) return console.log(err)
       console.log("User created!", user)
     })
@@ -63,8 +63,8 @@ module.exports = {
     mongoose.disconnect()
   },
 
-  updateUserData: async (userName, data) => {
-    userModel.findOne({ telegramUserName: userName.trim() }, (err, user) => {
+  updateUserData: async (userId, data) => {
+    userModel.findOne({ userID: userId }, (err, user) => {
       if (err) return console.log(err)
       let lastSession = ''
       data.lastSessionHours.split(':').forEach(str => {lastSession+=str})
@@ -72,17 +72,28 @@ module.exports = {
       let longestSession = ''
       user.theLongestSession.split(':').forEach(str => {longestSession+=str})
 
-      console.log(Number(lastSession) , Number(longestSession))
-
       data.theLongestSession = Number(lastSession) > Number(longestSession) ? data.lastSessionHours : user.theLongestSession
 
       data.totalHours = _addTimeToTotalHour(data.lastSessionHours, user.totalHours)
 
-      console.log('new Data', data)
-      userModel.findOneAndUpdate({telegramUserName: userName}, data, {new:true}, (err, user) => {
+      userModel.findOneAndUpdate({userID: userId}, data, {new:true}, (err, user) => {
         if(err) return console.log(err)
-        console.log("Update user:", user)
+        console.log("Update user data:", user)
       })
+    })
+  },
+
+  setUserHourInGame: async (userId, data) => {
+    userModel.findOneAndUpdate({ userID: userId }, data, {new:true}, (err, user) => {
+      if (err) return console.log(err)
+      console.log("Update user hour:", user)
+    })
+  },
+
+  resetUserData: async (userId, data) => {
+    userModel.findOneAndUpdate({ userID: userId }, data, {new:true}, (err, user) => {
+      if (err) return console.log(err)
+      console.log("reset was successfully:", user)
     })
   }
 }
