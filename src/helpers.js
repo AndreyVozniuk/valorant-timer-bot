@@ -8,8 +8,8 @@ const _timeParse = (time) => {
 module.exports = {
   getDescription: () => {
     let description = ''
-    const lines = fs.readFileSync('./private_files/description.txt').toString().split('\n')
-    lines.forEach((el) => { description += el })
+    const lines = fs.readFileSync('./private_files/description.txt').toString().split(';')
+    lines.forEach((el) => { description += `${el}\n`})
     return description
   },
 
